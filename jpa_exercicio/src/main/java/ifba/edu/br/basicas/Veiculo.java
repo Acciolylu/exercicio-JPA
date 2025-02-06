@@ -1,31 +1,37 @@
 package ifba.edu.br.basicas;
 
-
 import java.io.Serializable;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Veiculo implements Serializable {
-   
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-   private int id; 
-   private String modelo;
-   private String montadora;
+    private int id;
+    private String modelo;
+    private String montadora;
 
-   @ManyToOne
-   @JoinColumn(name = "cliente_id", nullable = false )
-   private Cliente cliente;
+    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL)
+    private List<HistoricoServico> historicoServicos;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 
     public Veiculo() {
-      }
+    }
 
     public Veiculo(int id, String modelo, String montadora, Cliente cliente) {
         this.id = id;
@@ -75,6 +81,4 @@ public class Veiculo implements Serializable {
         return "Veiculo [id=" + id + ", modelo=" + modelo + ", montadora=" + montadora + ", cliente=" + cliente + "]";
     }
 
-   
 }
-
